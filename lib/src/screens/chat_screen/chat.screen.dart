@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:test_task/src/screens/chat_detail_screen/chat_detail_screen.dart';
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
+  const ChatScreen({super.key});
+
+  @override
+  State<ChatScreen> createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
   final List<ChatItem> chatItems = [
     ChatItem('23 ч 43 мин', 'Отлично выглядишь', 'assets/images/1.png',
         ['Отлично выглядишь!', 'Спасибо!']),
@@ -17,8 +24,6 @@ class ChatScreen extends StatelessWidget {
     ChatItem('01 ч 09 мин', 'Привет', 'assets/images/6.png',
         ['Привет', 'Привет, как дела?']),
   ];
-
-  ChatScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -57,10 +62,13 @@ class ChatScreen extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                     ),
                   ),
-                  const SizedBox(
-                    width: 15,
+                  const SizedBox(width: 15),
+                  GestureDetector(
+                    onTap: () {
+                      _showIncognitoModeOptions(context);
+                    },
+                    child: SvgPicture.asset('assets/icons/foto.svg'),
                   ),
-                  SvgPicture.asset('assets/icons/foto.svg')
                 ],
               ),
               const SizedBox(height: 10),
@@ -175,7 +183,116 @@ class ChatScreen extends StatelessWidget {
       ),
     );
   }
+
+  void _showIncognitoModeOptions(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: const EdgeInsets.all(16.0),
+          height: 450,
+          decoration: const BoxDecoration(
+            color: Color(0xFF0D1333),
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0),
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: SvgPicture.asset('assets/icons/fotobig.svg', height: 80),
+              ),
+              const SizedBox(height: 10),
+              const Center(
+                child: Text(
+                  'РЕЖИМ ИНКОГНИТО НА 24 ЧАСА',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                'Стань невидимкой в ленте и чатах, скрой объявление и наслаждайся <Space> незамеченным',
+                style: TextStyle(color: Colors.white, fontSize: 14),
+              ),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildIncognitoOption('1', '99 ₽', false),
+                  _buildIncognitoOption('3', '199 ₽', true),
+                  _buildIncognitoOption('7', '399 ₽', false, discount: true),
+                ],
+              ),
+              const Spacer(),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {},
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.purple,
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 50, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                  child: const Text('Купить'),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildIncognitoOption(String duration, String price, bool isHit,
+      {bool discount = false}) {
+    return Container(
+      width: 103,
+      padding: const EdgeInsets.all(16),
+      clipBehavior: Clip.antiAlias,
+      decoration: ShapeDecoration(
+        color: const Color(0xFF211F1F),
+        shape: RoundedRectangleBorder(
+          side: const BorderSide(width: 1, color: Color(0xFF383737)),
+          borderRadius: BorderRadius.circular(8),
+        ),
+      ),
+      child: Column(
+        children: [
+         
+          const SizedBox(height: 5),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                duration,
+                style: const TextStyle(color: Colors.white, fontSize: 16),
+              ),
+              const SizedBox(
+                width: 5,
+              ),
+              SvgPicture.asset(
+                'assets/icons/glasses.svg',
+              )
+            ],
+          ),
+          const SizedBox(height: 5),
+          Text(
+            price,
+            style: const TextStyle(color: Colors.white, fontSize: 16),
+          ),
+        ],
+      ),
+    );
+  }
 }
+
 class ChatItem {
   final String message;
   final String time;

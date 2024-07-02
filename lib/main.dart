@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:test_task/src/screens/chat_screen/chat.screen.dart';
+import 'package:test_task/src/screens/test.dart';
 
 void main() {
   runApp(const ChatApp());
@@ -10,10 +11,9 @@ class ChatApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       home: ChatScreen(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
-
