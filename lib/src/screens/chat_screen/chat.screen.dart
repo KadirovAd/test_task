@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:test_task/src/screens/chat_detail_screen/chat_detail_screen.dart';
@@ -10,6 +11,7 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
+  
   final List<ChatItem> chatItems = [
     ChatItem('23 ч 43 мин', 'Отлично выглядишь', 'assets/images/1.png',
         ['Отлично выглядишь!', 'Спасибо!']),
@@ -168,7 +170,7 @@ class _ChatScreenState extends State<ChatScreen> {
             label: '',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.chat),
+            icon: Icon(CupertinoIcons.chat_bubble_text_fill),
             label: '',
           ),
           BottomNavigationBarItem(
@@ -223,10 +225,9 @@ class _ChatScreenState extends State<ChatScreen> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
+                  _buildIncognitoOption('1', '99 ₽', false, ''),
                   _buildIncognitoOption(
-                      '1', '99 ₽', false, 'assets/icons/xits.svg'),
-                  _buildIncognitoOption(
-                      '3', '199 ₽', true, 'assets/icons/xits.svg'),
+                      '3', '199 ₽', true, 'assets/icons/skip.svg'),
                   _buildIncognitoOption(
                       '7', '399 ₽', false, 'assets/icons/xits.svg',
                       discount: true),
@@ -299,9 +300,10 @@ class _ChatScreenState extends State<ChatScreen> {
                   const SizedBox(
                     width: 5,
                   ),
-                  SvgPicture.asset(
-                    'assets/icons/glasses.svg',
-                  )
+                  if (svgIcon.isNotEmpty)
+                    SvgPicture.asset(
+                      'assets/icons/glasses.svg',
+                    ),
                 ],
               ),
               const SizedBox(height: 5),
@@ -312,13 +314,14 @@ class _ChatScreenState extends State<ChatScreen> {
             ],
           ),
         ),
-        Align(
-          heightFactor: 0.2,
-          child: SvgPicture.asset(
-            svgIcon,
-            width: 70,
+        if (svgIcon.isNotEmpty)
+          Align(
+            heightFactor: 0.2,
+            child: SvgPicture.asset(
+              svgIcon,
+              width: 70,
+            ),
           ),
-        )
       ],
     );
   }

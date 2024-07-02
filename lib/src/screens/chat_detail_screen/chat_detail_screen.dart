@@ -9,130 +9,136 @@ class ChatDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: const Color(0xFFD9D9D9),
-        automaticallyImplyLeading: false,
-        title: Row(
-          children: [
-            IconButton(
-              icon: const Icon(
-                Icons.arrow_back_ios,
-                size: 20,
-                color: Colors.black,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(130.0),
+        child: AppBar(
+          backgroundColor: const Color(0xFFD9D9D9),
+          automaticallyImplyLeading: false,
+          flexibleSpace: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Row(
+                children: [
+                  IconButton(
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                      size: 20,
+                      color: Colors.white,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  CircleAvatar(
+                    backgroundImage: AssetImage(chatItem.imageUrl),
+                    radius: 20,
+                  ),
+                  const Spacer(),
+                  IconButton(
+                    icon: const Icon(Icons.more_vert),
+                    color: Colors.white,
+                    onPressed: () {},
+                  ),
+                ],
               ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-            CircleAvatar(
-              backgroundImage: AssetImage(chatItem.imageUrl),
-              radius: 20,
-            ),
-            const Spacer(),
-            IconButton(
-              icon: const Icon(Icons.more_vert),
-              color: Colors.black,
-              onPressed: () {},
-            ),
-          ],
+              const SizedBox(
+                height: 30,
+              ),
+              Container(
+                width: double.infinity,
+                height: 39,
+                color: const Color(0xFF7446AC),
+                child: Row(
+                  children: [
+                    Image.asset('assets/images/fly.png'),
+                    const SizedBox(width: 10),
+                    const Text(
+                      '2 общих соблазна',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 16,
+                      ),
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      icon: const Icon(Icons.close, color: Colors.white),
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+            ],
+          ),
         ),
       ),
       body: Column(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              color: Colors.black87,
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(10),
-                topRight: Radius.circular(10),
+          Expanded(
+            child: Container(
+              decoration: const BoxDecoration(
+                color: Colors.black87,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  topRight: Radius.circular(10),
+                ),
               ),
-            ),
-            child: Column(
-              children: [
-                Container(
-                  color: const Color(0xFF7446AC),
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      const Icon(
-                        Icons.rocket,
-                        color: Colors.white,
-                      ),
-                      const SizedBox(width: 10),
-                      const Text(
-                        '2 общих соблазна',
+              child: Column(
+                children: [
+                  const Expanded(
+                    child: Center(
+                      child: Text(
+                        'Начни общение',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.grey,
                           fontSize: 16,
                         ),
                       ),
-                      const Spacer(),
-                      IconButton(
-                        icon: const Icon(Icons.close, color: Colors.white),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(
-                  height: 400,
-                  child: Center(
-                    child: Text(
-                      'Начни общение',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16,
-                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        decoration: BoxDecoration(
-                          color: Colors.grey[300],
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: const Icon(Icons.add, color: Colors.black),
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Container(
-                          height: 40,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[200],
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: const TextField(
-                            decoration: InputDecoration(
-                              hintText: 'Сообщение...',
-                              border: InputBorder.none,
-                              contentPadding:
-                                  EdgeInsets.symmetric(horizontal: 15.0),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    child: Row(
+                      children: [
+                        const SizedBox(width: 10),
+                        const Expanded(
+                          child: SizedBox(
+                            height: 35,
+                            child: TextField(
+                              decoration: InputDecoration(
+                                icon: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                ),
+                                hintText: 'Сообщение...',
+                                hintStyle: TextStyle(color: Colors.grey),
+                                suffixIcon: Image(
+                                  image: AssetImage('assets/images/man.png'),
+                                  fit: BoxFit.scaleDown,
+                                ),
+                                border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10)),
+                                ),
+                                contentPadding:
+                                    EdgeInsets.symmetric(horizontal: 15.0),
+                              ),
                             ),
-                            style: TextStyle(color: Colors.black),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 10),
-                      CircleAvatar(
-                        backgroundColor: const Color(0xFF2BA66F),
-                        child: IconButton(
-                          icon: const Icon(Icons.send, color: Colors.white),
+                        const SizedBox(width: 10),
+                        IconButton(
+                          icon: const Icon(Icons.mic, color: Colors.white),
                           onPressed: () {},
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 10),
-              ],
+                  const SizedBox(height: 20),
+                ],
+              ),
             ),
           ),
         ],
