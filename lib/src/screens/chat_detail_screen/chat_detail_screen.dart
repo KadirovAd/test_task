@@ -10,13 +10,16 @@ class ChatDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey[200],
+        backgroundColor: const Color(0xFFD9D9D9),
         automaticallyImplyLeading: false,
         title: Row(
           children: [
             IconButton(
-              icon: const Icon(Icons.arrow_back),
-              color: Colors.black,
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                size: 20,
+                color: Colors.black,
+              ),
               onPressed: () {
                 Navigator.pop(context);
               },
@@ -25,16 +28,7 @@ class ChatDetailScreen extends StatelessWidget {
               backgroundImage: AssetImage(chatItem.imageUrl),
               radius: 20,
             ),
-            const SizedBox(width: 10),
-            const Expanded(
-              child: Text(
-                '2 общих соблазна',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                ),
-              ),
-            ),
+            const Spacer(),
             IconButton(
               icon: const Icon(Icons.more_vert),
               color: Colors.black,
@@ -95,7 +89,7 @@ class ChatDetailScreen extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Row(
                     children: [
                       Container(
@@ -137,6 +131,7 @@ class ChatDetailScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+                const SizedBox(height: 10),
               ],
             ),
           ),

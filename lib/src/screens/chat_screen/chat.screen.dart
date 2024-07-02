@@ -30,7 +30,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 130,
-        backgroundColor: Colors.white,
+        backgroundColor: const Color(0xFFD9D9D9),
       ),
       body: Container(
         decoration: const BoxDecoration(
@@ -216,33 +216,52 @@ class _ChatScreenState extends State<ChatScreen> {
               ),
               const SizedBox(height: 10),
               const Text(
-                'Стань невидимкой в ленте и чатах, скрой объявление и наслаждайся <Space> незамеченным',
-                style: TextStyle(color: Colors.white, fontSize: 14),
+                'Стань невидимкой в ленте и чатах, скрой объявление и наслаждайся незамеченным',
+                style: TextStyle(color: Colors.white70, fontSize: 14),
               ),
               const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _buildIncognitoOption('1', '99 ₽', false),
-                  _buildIncognitoOption('3', '199 ₽', true),
-                  _buildIncognitoOption('7', '399 ₽', false, discount: true),
+                  _buildIncognitoOption(
+                      '1', '99 ₽', false, 'assets/icons/xits.svg'),
+                  _buildIncognitoOption(
+                      '3', '199 ₽', true, 'assets/icons/xits.svg'),
+                  _buildIncognitoOption(
+                      '7', '399 ₽', false, 'assets/icons/xits.svg',
+                      discount: true),
                 ],
               ),
-              const Spacer(),
-              Center(
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.purple,
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 50, vertical: 10),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                  ),
-                  child: const Text('Купить'),
-                ),
+              const SizedBox(
+                height: 25,
               ),
+              Container(
+                  height: 60,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: const Color(0xFFAA044A),
+                  ),
+                  child: const Center(
+                    child: Text(
+                      'Купить',
+                      style: TextStyle(
+                        color: Color(0xFFF6F3F3),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  )),
+              const Spacer(),
+              const Center(
+                child: Text(
+                  'УСЛОВИЯ И ПОЛОЖЕНИЯ',
+                  style: TextStyle(
+                    color: Color(0xFFF6F3F3),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              )
             ],
           ),
         );
@@ -250,45 +269,57 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  Widget _buildIncognitoOption(String duration, String price, bool isHit,
+  Widget _buildIncognitoOption(
+      String duration, String price, bool isHit, String svgIcon,
       {bool discount = false}) {
-    return Container(
-      width: 103,
-      padding: const EdgeInsets.all(16),
-      clipBehavior: Clip.antiAlias,
-      decoration: ShapeDecoration(
-        color: const Color(0xFF211F1F),
-        shape: RoundedRectangleBorder(
-          side: const BorderSide(width: 1, color: Color(0xFF383737)),
-          borderRadius: BorderRadius.circular(8),
-        ),
-      ),
-      child: Column(
-        children: [
-         
-          const SizedBox(height: 5),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+    return Stack(
+      alignment: Alignment.topCenter,
+      children: [
+        Container(
+          width: 103,
+          padding: const EdgeInsets.all(16),
+          clipBehavior: Clip.antiAlias,
+          decoration: ShapeDecoration(
+            color: const Color(0xFF211F1F),
+            shape: RoundedRectangleBorder(
+              side: const BorderSide(width: 1, color: Color(0xFF383737)),
+              borderRadius: BorderRadius.circular(8),
+            ),
+          ),
+          child: Column(
             children: [
+              const SizedBox(height: 5),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    duration,
+                    style: const TextStyle(color: Colors.white, fontSize: 16),
+                  ),
+                  const SizedBox(
+                    width: 5,
+                  ),
+                  SvgPicture.asset(
+                    'assets/icons/glasses.svg',
+                  )
+                ],
+              ),
+              const SizedBox(height: 5),
               Text(
-                duration,
+                price,
                 style: const TextStyle(color: Colors.white, fontSize: 16),
               ),
-              const SizedBox(
-                width: 5,
-              ),
-              SvgPicture.asset(
-                'assets/icons/glasses.svg',
-              )
             ],
           ),
-          const SizedBox(height: 5),
-          Text(
-            price,
-            style: const TextStyle(color: Colors.white, fontSize: 16),
+        ),
+        Align(
+          heightFactor: 0.2,
+          child: SvgPicture.asset(
+            svgIcon,
+            width: 70,
           ),
-        ],
-      ),
+        )
+      ],
     );
   }
 }
