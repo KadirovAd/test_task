@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:test_task/src/screens/chat_detail_screen/chat_detail_screen.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -11,7 +12,6 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  
   final List<ChatItem> chatItems = [
     ChatItem('23 ч 43 мин', 'Отлично выглядишь', 'assets/images/1.png',
         ['Отлично выглядишь!', 'Спасибо!']),
@@ -30,243 +30,267 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 130,
-        backgroundColor: const Color(0xFFD9D9D9),
+      appBar: _buildAppBar(),
+      body: _buildBody(),
+      bottomNavigationBar: _buildBottomNavigationBar(),
+    );
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      toolbarHeight: 20.h,
+      backgroundColor: const Color(0xFFD9D9D9),
+    );
+  }
+
+  Widget _buildBody() {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Colors.black87,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(10),
+          topRight: Radius.circular(10),
+        ),
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-          color: Colors.black87,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(10),
-            topRight: Radius.circular(10),
+      child: Padding(
+        padding: EdgeInsets.all(2.w),
+        child: Column(
+          children: [
+            _buildHeader(),
+            SizedBox(height: 2.h),
+            _buildLikesInfo(),
+            SizedBox(height: 2.h),
+            _buildChatList(),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Row _buildHeader() {
+    return Row(
+      children: [
+        Text(
+          'ЧАТЫ',
+          style: TextStyle(
+            color: const Color(0xFFF6F3F3),
+            fontSize: 20.sp,
           ),
         ),
-        child: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  const Text(
-                    'ЧАТЫ',
-                    style: TextStyle(
-                      color: Color(0xFFF6F3F3),
-                      fontSize: 24,
-                    ),
+        const Spacer(),
+        Text(
+          'OFF',
+          style: TextStyle(
+            color: const Color(0xFFF6F3F3),
+            fontSize: 14.sp,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        SizedBox(width: 3.w),
+        GestureDetector(
+          onTap: () => _showIncognitoModeOptions(context),
+          child: SvgPicture.asset('assets/icons/foto.svg', width: 10.w),
+        ),
+      ],
+    );
+  }
+
+  Row _buildLikesInfo() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        CircleAvatar(
+          maxRadius: 3.5.h,
+          backgroundColor: const Color(0xFF1F093A),
+          child:
+              Icon(Icons.favorite, color: const Color(0xFF7446AC), size: 4.h),
+        ),
+        SizedBox(width: 4.w),
+        Text(
+          '44 человека тебя лайкнули',
+          style: TextStyle(
+            fontSize: 15.sp,
+            color: Colors.white,
+          ),
+        ),
+        const Spacer(),
+        CircleAvatar(
+          maxRadius: 0.3.h,
+          backgroundColor: Colors.white,
+        ),
+      ],
+    );
+  }
+
+  Expanded _buildChatList() {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: chatItems.length,
+        itemBuilder: (context, index) {
+          final item = chatItems[index];
+          return _buildChatItem(item);
+        },
+      ),
+    );
+  }
+
+  Widget _buildChatItem(ChatItem item) {
+    return InkWell(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ChatDetailScreen(chatItem: item),
+        ),
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(vertical: 1.h),
+        child: Row(
+          children: [
+            CircleAvatar(
+              maxRadius: 3.5.h,
+              backgroundImage: AssetImage(item.imageUrl),
+            ),
+            SizedBox(width: 4.w),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.message,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: const Color.fromARGB(255, 227, 227, 227),
                   ),
-                  const Spacer(),
-                  const Text(
-                    'OFF',
-                    style: TextStyle(
-                      color: Color(0xFFF6F3F3),
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  const SizedBox(width: 15),
-                  GestureDetector(
-                    onTap: () {
-                      _showIncognitoModeOptions(context);
-                    },
-                    child: SvgPicture.asset('assets/icons/foto.svg'),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              const Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  CircleAvatar(
-                    maxRadius: 30,
-                    backgroundColor: Color(0xFF1F093A),
-                    child: Icon(Icons.favorite, color: Color(0xFF7446AC)),
-                  ),
-                  SizedBox(width: 16),
-                  Text(
-                    '44 человека тебя лайкнули',
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
-                    ),
-                  ),
-                  Spacer(),
-                  CircleAvatar(
-                    maxRadius: 3,
-                    backgroundColor: Colors.white,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: chatItems.length,
-                  itemBuilder: (context, index) {
-                    final item = chatItems[index];
-                    return InkWell(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ChatDetailScreen(chatItem: item),
-                          ),
-                        );
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              maxRadius: 32,
-                              backgroundImage: AssetImage(item.imageUrl),
-                            ),
-                            const SizedBox(width: 16),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  item.message,
-                                  style: const TextStyle(
-                                    fontSize: 14,
-                                    color: Color.fromARGB(255, 227, 227, 227),
-                                  ),
-                                ),
-                                Text(
-                                  item.time,
-                                  style: const TextStyle(
-                                    fontSize: 15,
-                                    color: Color.fromARGB(255, 227, 227, 227),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            if (item.message == 'Встретимся? Я рядом') ...[
-                              const Spacer(),
-                              const CircleAvatar(
-                                maxRadius: 3,
-                                backgroundColor: Colors.white,
-                              ),
-                            ],
-                          ],
-                        ),
-                      ),
-                    );
-                  },
                 ),
+                Text(
+                  item.time,
+                  style: TextStyle(
+                    fontSize: 14.sp,
+                    color: const Color.fromARGB(255, 227, 227, 227),
+                  ),
+                ),
+              ],
+            ),
+            if (item.message == 'Встретимся? Я рядом') const Spacer(),
+            if (item.message == 'Встретимся? Я рядом')
+              CircleAvatar(
+                maxRadius: 0.3.h,
+                backgroundColor: Colors.white,
               ),
-            ],
-          ),
+          ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.black87,
-        selectedItemColor: Colors.purple,
-        unselectedItemColor: Colors.white,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.grid_on),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(CupertinoIcons.chat_bubble_text_fill),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.favorite),
-            label: '',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: '',
-          ),
-        ],
-      ),
+    );
+  }
+
+  BottomNavigationBar _buildBottomNavigationBar() {
+    return BottomNavigationBar(
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: Colors.black87,
+      selectedItemColor: Colors.purple,
+      unselectedItemColor: Colors.white,
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.grid_on),
+          label: '',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(CupertinoIcons.chat_bubble_text_fill),
+          label: '',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.favorite),
+          label: '',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings),
+          label: '',
+        ),
+      ],
     );
   }
 
   void _showIncognitoModeOptions(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      builder: (context) {
-        return Container(
-          padding: const EdgeInsets.all(16.0),
-          height: 450,
-          decoration: const BoxDecoration(
-            color: Color(0xFF0D1333),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(20.0),
-              topRight: Radius.circular(20.0),
+      builder: (context) => _buildIncognitoModeOptions(),
+    );
+  }
+
+  Widget _buildIncognitoModeOptions() {
+    return Container(
+      padding: EdgeInsets.all(4.w),
+      height: 60.h,
+      decoration: const BoxDecoration(
+        color: Color(0xFF0D1333),
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(20.0),
+          topRight: Radius.circular(20.0),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: SvgPicture.asset('assets/icons/fotobig.svg', height: 10.h),
+          ),
+          SizedBox(height: 2.h),
+          Center(
+            child: Text(
+              'РЕЖИМ ИНКОГНИТО НА 24 ЧАСА',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18.sp,
+                  fontWeight: FontWeight.bold),
             ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          SizedBox(height: 2.h),
+          Text(
+            'Стань невидимкой в ленте и чатах, скрой объявление и наслаждайся незамеченным',
+            style: TextStyle(color: Colors.white70, fontSize: 14.sp),
+          ),
+          SizedBox(height: 4.h),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Center(
-                child: SvgPicture.asset('assets/icons/fotobig.svg', height: 80),
-              ),
-              const SizedBox(height: 10),
-              const Center(
-                child: Text(
-                  'РЕЖИМ ИНКОГНИТО НА 24 ЧАСА',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-              const SizedBox(height: 10),
-              const Text(
-                'Стань невидимкой в ленте и чатах, скрой объявление и наслаждайся незамеченным',
-                style: TextStyle(color: Colors.white70, fontSize: 14),
-              ),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildIncognitoOption('1', '99 ₽', false, ''),
-                  _buildIncognitoOption(
-                      '3', '199 ₽', true, 'assets/icons/skip.svg'),
-                  _buildIncognitoOption(
-                      '7', '399 ₽', false, 'assets/icons/xits.svg',
-                      discount: true),
-                ],
-              ),
-              const SizedBox(
-                height: 25,
-              ),
-              Container(
-                  height: 60,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: const Color(0xFFAA044A),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'Купить',
-                      style: TextStyle(
-                        color: Color(0xFFF6F3F3),
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  )),
-              const Spacer(),
-              const Center(
-                child: Text(
-                  'УСЛОВИЯ И ПОЛОЖЕНИЯ',
-                  style: TextStyle(
-                    color: Color(0xFFF6F3F3),
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              )
+              _buildIncognitoOption('1', '99 ₽', false, ''),
+              _buildIncognitoOption(
+                  '3', '199 ₽', true, 'assets/icons/skip.svg'),
+              _buildIncognitoOption(
+                  '7', '399 ₽', false, 'assets/icons/xits.svg',
+                  discount: true),
             ],
           ),
-        );
-      },
+          SizedBox(height: 4.h),
+          Container(
+            height: 8.h,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: const Color(0xFFAA044A),
+            ),
+            child: Center(
+              child: Text(
+                'Купить',
+                style: TextStyle(
+                  color: const Color(0xFFF6F3F3),
+                  fontSize: 16.sp,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+            ),
+          ),
+          const Spacer(),
+          Center(
+            child: Text(
+              'УСЛОВИЯ И ПОЛОЖЕНИЯ',
+              style: TextStyle(
+                color: const Color(0xFFF6F3F3),
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w400,
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 
@@ -277,8 +301,8 @@ class _ChatScreenState extends State<ChatScreen> {
       alignment: Alignment.topCenter,
       children: [
         Container(
-          width: 103,
-          padding: const EdgeInsets.all(16),
+          width: 30.w,
+          padding: EdgeInsets.all(3.w),
           clipBehavior: Clip.antiAlias,
           decoration: ShapeDecoration(
             color: const Color(0xFF211F1F),
@@ -289,27 +313,26 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           child: Column(
             children: [
-              const SizedBox(height: 5),
+              SizedBox(height: 1.h),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     duration,
-                    style: const TextStyle(color: Colors.white, fontSize: 16),
+                    style: TextStyle(color: Colors.white, fontSize: 16.sp),
                   ),
-                  const SizedBox(
-                    width: 5,
-                  ),
+                  SizedBox(width: 1.w),
                   if (svgIcon.isNotEmpty)
                     SvgPicture.asset(
                       'assets/icons/glasses.svg',
+                      width: 5.w,
                     ),
                 ],
               ),
-              const SizedBox(height: 5),
+              SizedBox(height: 1.h),
               Text(
                 price,
-                style: const TextStyle(color: Colors.white, fontSize: 16),
+                style: TextStyle(color: Colors.white, fontSize: 16.sp),
               ),
             ],
           ),
@@ -319,7 +342,7 @@ class _ChatScreenState extends State<ChatScreen> {
             heightFactor: 0.2,
             child: SvgPicture.asset(
               svgIcon,
-              width: 70,
+              width: 20.w,
             ),
           ),
       ],
