@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:test_task/src/screens/chat_screen/chat.screen.dart';
-import 'package:test_task/src/screens/test.dart';
 
 void main() {
   runApp(const ChatApp());
@@ -11,9 +11,13 @@ class ChatApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: ChatScreen(),
-      debugShowCheckedModeBanner: false,
+    return ResponsiveSizer(
+      builder: (context, orientation, screenType) {
+        return const MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: ChatScreen(),
+        );
+      },
     );
   }
 }

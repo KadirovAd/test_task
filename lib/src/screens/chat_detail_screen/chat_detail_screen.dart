@@ -10,7 +10,7 @@ class ChatDetailScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(130.0),
+        preferredSize: const Size.fromHeight(170.0),
         child: AppBar(
           backgroundColor: const Color(0xFFD9D9D9),
           automaticallyImplyLeading: false,
